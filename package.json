@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "npmg": "npmglobal.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ohmmee/npmglobal.git"
