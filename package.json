@@ -1,0 +1,26 @@
+{
+  "name": "npmglobal",
+  "version": "1.0.0",
+  "description": "install npm packages globally and link them in your projects also adding the entries in your package.json file",
+  "main": "npmglobal.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohmmee/npmglobal.git"
+  },
+  "keywords": [
+    "npm",
+    "npmlink",
+    "link",
+    "global",
+    "reuse"
+  ],
+  "author": "Omkar Shrestha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ohmmee/npmglobal/issues"
+  },
+  "homepage": "https://github.com/ohmmee/npmglobal#readme"
+}
