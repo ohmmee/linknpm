@@ -1,17 +1,17 @@
 {
-  "name": "npmglobal",
+  "name": "linknpm",
   "version": "1.0.0",
   "description": "install npm packages globally and link them in your projects also adding the entries in your package.json file",
-  "main": "npmglobal.js",
+  "main": "linknpm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "npmg": "npmglobal.js"
+    "link": "linknpm.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ohmmee/npmglobal.git"
+    "url": "git+https://github.com/ohmmee/linknpm.git"
   },
   "keywords": [
     "npm",
@@ -23,7 +23,7 @@
   "author": "Omkar Shrestha",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ohmmee/npmglobal/issues"
+    "url": "https://github.com/ohmmee/linknpm/issues"
   },
-  "homepage": "https://github.com/ohmmee/npmglobal#readme"
+  "homepage": "https://github.com/ohmmee/linknpm#readme"
 }
