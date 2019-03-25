@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// pardon me for the messed up callbacks, will work with Promises on later version
+
 const exec = require("child_process").exec;
 const fs = require("fs");
 const readline = require("readline");
@@ -35,8 +37,6 @@ if (process.argv[2]) {
       });
       // console.log(installedPackages);
 
-      // Object.keys(packages).forEach
-
       let index = 0;
 
       function MainThread(package) {
@@ -54,7 +54,6 @@ if (process.argv[2]) {
         // ** if no entries in installedPackages, then also npm link; that'll install globally and link
         else if (!installedPackages[package]) {
           exec(`npm link ${package}`, (err, stdout, stderr) => {
-            // console.log(stdout);
             console.log(
               `${package}^${packages[package]} is downloaded and linked locally`
             );
@@ -63,9 +62,8 @@ if (process.argv[2]) {
               : process.exit();
           });
         }
-        // **TODO** if conflict between package.json and global package, ask for input
+        // ** if conflict between package.json and global package, ask for input
         else if (packages[package] !== installedPackages[package]) {
-          // let difference = ">" || "<";
           const packagejson = packages[package].split("."),
             installed = installedPackages[package].split(".");
           const difference =
@@ -100,9 +98,7 @@ if (process.argv[2]) {
             } else {
               if (str === "u") {
                 exec(`npm i -g ${package}`, (err, stdout, stderr) => {
-                  // console.log(stdout);
                   exec(`npm link ${package}`, (err, stdout, stderr) => {
-                    // console.log(stdout);
                     console.log(
                       `${package}^${
                         packages[package]
@@ -115,7 +111,6 @@ if (process.argv[2]) {
                 });
               } else if (str === "l") {
                 exec(`npm link ${package}`, (err, stdout, stderr) => {
-                  // console.log(stdout);
                   console.log(
                     `${package}^${
                       packages[package]
@@ -129,16 +124,11 @@ if (process.argv[2]) {
             }
           });
         }
-
-        // u to update the global and npm link => npm i -g <package name> && npm link <package-name>
-        // l to force link the older version that's already installed, give warning sign
       }
 
       const packagesArray = Object.keys(packages);
 
       packagesArray[index] && MainThread(packagesArray[index]);
-      // console.log(`stdout: ${stdout}`);
-      // console.log(`stderr: ${stderr}`);
     });
   });
 }

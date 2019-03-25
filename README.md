@@ -35,3 +35,8 @@ $ link express    # downloads latest "express" module globally, links and update
 | Scenario | linknpm does |
 | -------- | ------------ |
 | package.json is present |  -->
+
+On Conflict between installed version and package.json requirement, it'll prompt for input
+
+- "u" to update the global package and npm link => npm i -g <package-name> && npm link <package-name>
+- "l" to force link the older version that's already installed, gives warning
