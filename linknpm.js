@@ -8,17 +8,24 @@ const readline = require("readline");
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
-if (process.argv[2]) {
-  exec(`npm link ${process.argv[2]}`, (err, stdout, stderr) => {
-    console.log(stdout);
-    console.log(`${process.argv[2]} is linked locally`);
-  });
-} else {
-  fs.readFile("./package.json", (err, data) => {
+fs.readFile("./package.json", (err, data) => {
+  if (process.argv[2]) {
+    exec(`npm link ${process.argv[2]}`, (err, stdout, stderr) => {
+      if (!err) {
+        const toModify = JSON.parse(data.toString());
+        toModify.dependencies[process.argv[2]] = "**TODO**";
+        const modifiedFile = JSON.stringify(toModify, null, 2);
+        fs.writeFile("./package.json", modifiedFile, err => {
+          console.log(stdout);
+          console.log(`${process.argv[2]} is linked locally`);
+        });
+      }
+    });
+  } else {
     exec("npm ls -g --depth 0", (err, stdout, stderr) => {
       const packages = JSON.parse(data.toString()).dependencies;
       Object.keys(packages).forEach(val => {
-        packages[val] = packages[val].slice(1);
+        packages[val] = packages[val].replace(/\^/, "");
       });
       console.log(packages);
 
@@ -51,16 +58,21 @@ if (process.argv[2]) {
               : process.exit();
           });
         }
-        // ** if no entries in installedPackages, then also npm link; that'll install globally and link
+        // ** if no entries in installedPackages, then also npm link; that'll install same version globally and link
         else if (!installedPackages[package]) {
-          exec(`npm link ${package}`, (err, stdout, stderr) => {
-            console.log(
-              `${package}^${packages[package]} is downloaded and linked locally`
-            );
-            packagesArray[index]
-              ? MainThread(packagesArray[index])
-              : process.exit();
-          });
+          exec(
+            `npm link ${package}@${packages[package]}`,
+            (err, stdout, stderr) => {
+              console.log(
+                `${package}^${
+                  packages[package]
+                } is downloaded and linked locally`
+              );
+              packagesArray[index]
+                ? MainThread(packagesArray[index])
+                : process.exit();
+            }
+          );
         }
         // ** if conflict between package.json and global package, ask for input
         else if (packages[package] !== installedPackages[package]) {
@@ -130,5 +142,5 @@ if (process.argv[2]) {
 
       packagesArray[index] && MainThread(packagesArray[index]);
     });
-  });
-}
+  }
+});
