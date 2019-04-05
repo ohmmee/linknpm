@@ -8,12 +8,18 @@ const readline = require("readline");
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
-fs.readFile("./package.json", (err, data) => {
+fs.readFile("./package.json", { encoding: "utf-8" }, (err, data) => {
   if (process.argv[2]) {
     exec(`npm link ${process.argv[2]}`, (err, stdout, stderr) => {
       if (!err) {
-        const toModify = JSON.parse(data.toString());
-        toModify.dependencies[process.argv[2]] = "**TODO**";
+        let toModify;
+        if (typeof data == "undefined") {
+          toModify = { linknpm: true };
+        } else {
+          toModify = JSON.parse(data);
+        }
+        toModify["dependencies"] = toModify["dependencies"] || {};
+        toModify["dependencies"][process.argv[2]] = "**TODO**";
         const modifiedFile = JSON.stringify(toModify, null, 2);
         fs.writeFile("./package.json", modifiedFile, err => {
           console.log(stdout);
